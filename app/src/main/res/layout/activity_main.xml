@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/com.elyeproj.sampleloaderview"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -21,7 +21,7 @@
             android:layout_height="100dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
-            app:corners="16"
+            app:corners="16dp"
             app:use_gradient="true" />
 
         <LinearLayout
@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:textSize="@dimen/standard_font_size"
-                app:corners="32"
+                app:corners="32dp"
                 app:height_weight="0.8"
                 app:width_weight="1.0" />
 
@@ -62,7 +62,7 @@
                 android:drawableLeft="@drawable/ic_phone_grey_500_18dp"
                 android:drawablePadding="8dp"
                 android:textSize="@dimen/standard_font_size"
-                app:corners="16"
+                app:corners="16dp"
                 app:height_weight="0.8"
                 app:width_weight="0.4" />
 
@@ -75,7 +75,7 @@
                 android:drawableLeft="@drawable/ic_mail_outline_grey_500_18dp"
                 android:drawablePadding="8dp"
                 android:textSize="@dimen/standard_font_size"
-                app:corners="8"
+                app:corners="8dp"
                 app:custom_color="@android:color/holo_green_dark"
                 app:height_weight="0.8"
                 app:width_weight="0.9" />

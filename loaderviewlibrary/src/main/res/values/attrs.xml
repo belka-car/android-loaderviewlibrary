@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="loader_view">
+    <declare-styleable name="LoaderViewAttrs">
         <attr name="width_weight" format="float" />
         <attr name="height_weight" format="float" />
         <attr name="use_gradient" format="boolean" />
-        <attr name="corners" format="integer" />
-        <attr name="custom_color" format="color"/>
+        <attr name="corners" format="dimension" />
+        <attr name="custom_color" format="color" />
+    </declare-styleable>
+    <declare-styleable name="LoaderTextView">
+        <attr name="width_weight" />
+        <attr name="height_weight" />
+        <attr name="use_gradient" />
+        <attr name="corners" />
+        <attr name="custom_color" />
+    </declare-styleable>
+    <declare-styleable name="LoaderImageView">
+        <attr name="use_gradient" />
+        <attr name="corners" />
+        <attr name="custom_color" />
     </declare-styleable>
 </resources>
