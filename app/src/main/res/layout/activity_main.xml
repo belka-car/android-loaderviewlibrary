@@ -5,36 +5,36 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.elyeproj.sampleloaderview.MainActivity">
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <com.elyeproj.loaderviewlibrary.LoaderImageView
-            android:id="@+id/image_icon"
+            android:id="@+id/icon"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
-            app:use_gradient="true"
-            app:corners="16" />
+            app:corners="16"
+            app:use_gradient="true" />
 
         <LinearLayout
-            android:id="@+id/container_text"
+            android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toEndOf="@id/image_icon"
-            android:layout_toRightOf="@id/image_icon"
+            android:layout_toEndOf="@id/icon"
+            android:layout_toRightOf="@id/icon"
             android:orientation="vertical">
 
             <com.elyeproj.loaderviewlibrary.LoaderTextView
-                android:id="@+id/txt_name"
+                android:id="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/title_font_size"
@@ -44,51 +44,50 @@
                 app:width_weight="0.6" />
 
             <com.elyeproj.loaderviewlibrary.LoaderTextView
-                android:id="@+id/txt_title"
+                android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:textSize="@dimen/standard_font_size"
+                app:corners="32"
                 app:height_weight="0.8"
-                app:width_weight="1.0"
-                app:corners="32" />
+                app:width_weight="1.0" />
 
             <com.elyeproj.loaderviewlibrary.LoaderTextView
-                android:id="@+id/txt_phone"
+                android:id="@+id/phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:drawableLeft="@drawable/ic_phone_grey_500_18dp"
                 android:drawableStart="@drawable/ic_phone_grey_500_18dp"
+                android:drawableLeft="@drawable/ic_phone_grey_500_18dp"
                 android:drawablePadding="8dp"
                 android:textSize="@dimen/standard_font_size"
+                app:corners="16"
                 app:height_weight="0.8"
-                app:width_weight="0.4"
-                app:corners="16" />
+                app:width_weight="0.4" />
 
             <com.elyeproj.loaderviewlibrary.LoaderTextView
-                android:id="@+id/txt_email"
+                android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:drawableLeft="@drawable/ic_mail_outline_grey_500_18dp"
                 android:drawableStart="@drawable/ic_mail_outline_grey_500_18dp"
+                android:drawableLeft="@drawable/ic_mail_outline_grey_500_18dp"
                 android:drawablePadding="8dp"
                 android:textSize="@dimen/standard_font_size"
-                app:height_weight="0.8"
-                app:width_weight="0.9"
                 app:corners="8"
-                app:custom_color="@android:color/holo_green_dark"/>
+                app:custom_color="@android:color/holo_green_dark"
+                app:height_weight="0.8"
+                app:width_weight="0.9" />
 
         </LinearLayout>
 
     </RelativeLayout>
 
     <Button
-        android:id="@+id/btn_reset"
+        android:id="@+id/reset"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/activity_vertical_margin"
-        android:onClick="resetLoader"
         android:text="@string/btn_reset" />
 </LinearLayout>

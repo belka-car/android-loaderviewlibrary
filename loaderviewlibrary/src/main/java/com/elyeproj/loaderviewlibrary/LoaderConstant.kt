@@ -1,6 +1,6 @@
-package com.elyeproj.loaderviewlibrary;
+package com.elyeproj.loaderviewlibrary
 
-import android.graphics.Paint;
+import android.graphics.Color
 
 /*
  * Copyright 2016 Elye Project
@@ -17,11 +17,10 @@ import android.graphics.Paint;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-interface LoaderView {
-    void setRectColor(Paint rectPaint);
-
-    void invalidate();
-
-    boolean valueSet();
+internal object LoaderConstant {
+    val COLOR_DEFAULT_GRADIENT = Color.rgb(245, 245, 245)
+    const val MIN_WEIGHT = 0.0f
+    const val MAX_WEIGHT = 1.0f
+    const val CORNER_DEFAULT = 0
+    const val USE_GRADIENT_DEFAULT = false
 }
