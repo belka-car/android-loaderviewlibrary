@@ -31,32 +31,33 @@ class LoaderImageView @JvmOverloads constructor(
     defStyleAttr: Int = 0,
 ) : AppCompatImageView(context, attrs, defStyleAttr), LoaderView {
 
-    private val loaderController = LoaderController(this)
+    private val loaderController: LoaderController?
     private var defaultColorResource = 0
 
     init {
-        context.obtainStyledAttributes(attrs, R.styleable.loader_view, 0, 0).use { typedArray ->
-            loaderController.setUseGradient(typedArray.getBoolean(R.styleable.loader_view_use_gradient, LoaderConstant.USE_GRADIENT_DEFAULT))
-            loaderController.setCorners(typedArray.getInt(R.styleable.loader_view_corners, LoaderConstant.CORNER_DEFAULT))
-            defaultColorResource = typedArray.getColor(R.styleable.loader_view_custom_color, ContextCompat.getColor(context, R.color.default_color))
+        loaderController = LoaderController(this)
+        context.obtainStyledAttributes(attrs, R.styleable.LoaderImageView, 0, 0).use { typedArray ->
+            loaderController.setUseGradient(typedArray.getBoolean(R.styleable.LoaderImageView_use_gradient, LoaderConstant.USE_GRADIENT_DEFAULT))
+            loaderController.setCorners(typedArray.getDimensionPixelSize(R.styleable.LoaderImageView_corners, LoaderConstant.CORNER_DEFAULT))
+            defaultColorResource = typedArray.getColor(R.styleable.LoaderImageView_custom_color, ContextCompat.getColor(context, R.color.default_color))
         }
     }
 
     fun resetLoader() {
         if (drawable != null) {
             super.setImageDrawable(null)
-            loaderController.startLoading()
+            loaderController?.startLoading()
         }
     }
 
     override fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldHeight: Int) {
         super.onSizeChanged(width, height, oldWidth, oldHeight)
-        loaderController.onSizeChanged()
+        loaderController?.onSizeChanged()
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        loaderController.onDraw(canvas)
+        loaderController?.onDraw(canvas)
     }
 
     override fun setRectColor(rectPaint: Paint) {
@@ -67,26 +68,26 @@ class LoaderImageView @JvmOverloads constructor(
 
     override fun setImageBitmap(bm: Bitmap) {
         super.setImageBitmap(bm)
-        loaderController.stopLoading()
+        loaderController?.stopLoading()
     }
 
     override fun setImageDrawable(drawable: Drawable?) {
         super.setImageDrawable(drawable)
-        loaderController.stopLoading()
+        loaderController?.stopLoading()
     }
 
     override fun setImageIcon(icon: Icon?) {
         super.setImageIcon(icon)
-        loaderController.stopLoading()
+        loaderController?.stopLoading()
     }
 
     override fun setImageResource(resId: Int) {
         super.setImageResource(resId)
-        loaderController.stopLoading()
+        loaderController?.stopLoading()
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        loaderController.removeAnimatorUpdateListener()
+        loaderController?.removeAnimatorUpdateListener()
     }
 }

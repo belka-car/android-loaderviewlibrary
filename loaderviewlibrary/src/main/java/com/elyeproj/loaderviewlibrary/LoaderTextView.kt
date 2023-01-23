@@ -29,18 +29,19 @@ class LoaderTextView @JvmOverloads constructor(
     defStyleAttr: Int = 0,
 ) : AppCompatTextView(context, attrs, defStyleAttr), LoaderView {
 
-    private val loaderController: LoaderController? = LoaderController(this)
+    private val loaderController: LoaderController?
     private var defaultColorResource = 0
     private var darkerColorResource = 0
 
     init {
-        context.obtainStyledAttributes(attrs, R.styleable.loader_view, 0, 0).use { typedArray ->
-            loaderController?.setWidthWeight(typedArray.getFloat(R.styleable.loader_view_width_weight, LoaderConstant.MAX_WEIGHT))
-            loaderController?.setHeightWeight(typedArray.getFloat(R.styleable.loader_view_height_weight, LoaderConstant.MAX_WEIGHT))
-            loaderController?.setUseGradient(typedArray.getBoolean(R.styleable.loader_view_use_gradient, LoaderConstant.USE_GRADIENT_DEFAULT))
-            loaderController?.setCorners(typedArray.getInt(R.styleable.loader_view_corners, LoaderConstant.CORNER_DEFAULT))
-            defaultColorResource = typedArray.getColor(R.styleable.loader_view_custom_color, ContextCompat.getColor(context, R.color.default_color))
-            darkerColorResource = typedArray.getColor(R.styleable.loader_view_custom_color, ContextCompat.getColor(context, R.color.darker_color))
+        loaderController = LoaderController(this)
+        context.obtainStyledAttributes(attrs, R.styleable.LoaderTextView, 0, 0).use { typedArray ->
+            loaderController.setWidthWeight(typedArray.getFloat(R.styleable.LoaderTextView_width_weight, LoaderConstant.MAX_WEIGHT))
+            loaderController.setHeightWeight(typedArray.getFloat(R.styleable.LoaderTextView_height_weight, LoaderConstant.MAX_WEIGHT))
+            loaderController.setUseGradient(typedArray.getBoolean(R.styleable.LoaderTextView_use_gradient, LoaderConstant.USE_GRADIENT_DEFAULT))
+            loaderController.setCorners(typedArray.getDimensionPixelSize(R.styleable.LoaderTextView_corners, LoaderConstant.CORNER_DEFAULT))
+            defaultColorResource = typedArray.getColor(R.styleable.LoaderTextView_custom_color, ContextCompat.getColor(context, R.color.default_color))
+            darkerColorResource = typedArray.getColor(R.styleable.LoaderTextView_custom_color, ContextCompat.getColor(context, R.color.darker_color))
         }
     }
 
