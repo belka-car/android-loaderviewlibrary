@@ -1,6 +1,6 @@
-package com.elyeproj.loaderviewlibrary;
+package com.elyeproj.loaderviewlibrary
 
-import android.graphics.Paint;
+import android.graphics.Paint
 
 /*
  * Copyright 2016 Elye Project
@@ -17,11 +17,8 @@ import android.graphics.Paint;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-interface LoaderView {
-    void setRectColor(Paint rectPaint);
-
-    void invalidate();
-
-    boolean valueSet();
+internal interface LoaderView {
+    fun setRectColor(rectPaint: Paint?)
+    fun invalidate()
+    fun valueSet(): Boolean
 }

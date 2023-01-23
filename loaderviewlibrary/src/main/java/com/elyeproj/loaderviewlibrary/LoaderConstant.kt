@@ -1,6 +1,6 @@
-package com.elyeproj.loaderviewlibrary;
+package com.elyeproj.loaderviewlibrary
 
-import android.graphics.Color;
+import android.graphics.Color
 
 /*
  * Copyright 2016 Elye Project
@@ -17,11 +17,11 @@ import android.graphics.Color;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-class LoaderConstant {
-    public final static int COLOR_DEFAULT_GRADIENT = Color.rgb(245, 245, 245);
-    public final static float MIN_WEIGHT = 0.0f;
-    public final static float MAX_WEIGHT = 1.0f;
-    public final static int CORNER_DEFAULT = 0;
-    public final static boolean USE_GRADIENT_DEFAULT = false;
+internal object LoaderConstant {
+    @JvmField
+    val COLOR_DEFAULT_GRADIENT = Color.rgb(245, 245, 245)
+    const val MIN_WEIGHT = 0.0f
+    const val MAX_WEIGHT = 1.0f
+    const val CORNER_DEFAULT = 0
+    const val USE_GRADIENT_DEFAULT = false
 }
