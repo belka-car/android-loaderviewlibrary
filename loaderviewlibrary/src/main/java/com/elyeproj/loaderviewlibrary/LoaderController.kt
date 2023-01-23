@@ -25,9 +25,9 @@ import android.view.animation.LinearInterpolator
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-internal class LoaderController(private val loaderView: LoaderView) : AnimatorUpdateListener {
-    private var rectPaint: Paint? = null
-    private var linearGradient: LinearGradient? = null
+class LoaderController(private val loaderView: LoaderView) : AnimatorUpdateListener {
+    private val rectPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG or Paint.FILTER_BITMAP_FLAG)
+
     private var progress = 0f
     private var valueAnimator: ValueAnimator? = null
     private var widthWeight = LoaderConstant.MAX_WEIGHT
@@ -40,50 +40,49 @@ internal class LoaderController(private val loaderView: LoaderView) : AnimatorUp
     }
 
     private fun init() {
-        rectPaint = Paint(Paint.ANTI_ALIAS_FLAG or Paint.FILTER_BITMAP_FLAG)
         loaderView.setRectColor(rectPaint)
         setValueAnimator(0.5f, 1f, ObjectAnimator.INFINITE)
     }
 
-    @JvmOverloads
-    fun onDraw(canvas: Canvas, left_pad: Float = 0f, top_pad: Float = 0f, right_pad: Float = 0f, bottom_pad: Float = 0f) {
-        val margin_height = canvas.height * (1 - heightWeight) / 2
-        rectPaint!!.alpha = (progress * MAX_COLOR_CONSTANT_VALUE).toInt()
+    fun onDraw(canvas: Canvas, paddingLeft: Float = 0f, paddingTop: Float = 0f, paddingRight: Float = 0f, paddingBottom: Float = 0f) {
+        val marginHeight = canvas.height * (1 - heightWeight) / 2
+        rectPaint.alpha = (progress * MAX_COLOR_CONSTANT_VALUE).toInt()
         if (useGradient) {
             prepareGradient(canvas.width * widthWeight)
         }
         canvas.drawRoundRect(
             RectF(
-                0 + left_pad,
-                margin_height + top_pad,
-                canvas.width * widthWeight - right_pad,
-                canvas.height - margin_height - bottom_pad
+                0 + paddingLeft,
+                marginHeight + paddingTop,
+                canvas.width * widthWeight - paddingRight,
+                canvas.height - marginHeight - paddingBottom
             ),
             corners.toFloat(), corners.toFloat(),
-            rectPaint!!
+            rectPaint
         )
     }
 
     fun onSizeChanged() {
-        linearGradient = null
+        rectPaint.shader = null
         startLoading()
     }
 
     private fun prepareGradient(width: Float) {
-        if (linearGradient == null) {
-            linearGradient = LinearGradient(
-                0f, 0f, width, 0f, rectPaint!!.color,
-                LoaderConstant.COLOR_DEFAULT_GRADIENT, Shader.TileMode.MIRROR
-            )
-        }
-        rectPaint!!.shader = linearGradient
+        if (rectPaint.shader != null) return
+
+        rectPaint.shader = LinearGradient(
+            0f, 0f, width, 0f, rectPaint.color,
+            LoaderConstant.COLOR_DEFAULT_GRADIENT, Shader.TileMode.MIRROR
+        )
     }
 
     fun startLoading() {
-        if (valueAnimator != null && !loaderView.valueSet()) {
-            valueAnimator!!.cancel()
+        if (loaderView.valueSet()) return
+
+        valueAnimator?.let {
+            it.cancel()
             init()
-            valueAnimator!!.start()
+            it.start()
         }
     }
 
@@ -103,10 +102,7 @@ internal class LoaderController(private val loaderView: LoaderView) : AnimatorUp
         this.corners = corners
     }
 
-    private fun validateWeight(weight: Float): Float {
-        if (weight > LoaderConstant.MAX_WEIGHT) return LoaderConstant.MAX_WEIGHT
-        return if (weight < LoaderConstant.MIN_WEIGHT) LoaderConstant.MIN_WEIGHT else weight
-    }
+    private fun validateWeight(weight: Float) = weight.coerceIn(LoaderConstant.MIN_WEIGHT, LoaderConstant.MAX_WEIGHT)
 
     fun stopLoading() {
         if (valueAnimator != null) {
@@ -117,12 +113,13 @@ internal class LoaderController(private val loaderView: LoaderView) : AnimatorUp
     }
 
     private fun setValueAnimator(begin: Float, end: Float, repeatCount: Int) {
-        valueAnimator = ValueAnimator.ofFloat(begin, end)
-        valueAnimator!!.setRepeatCount(repeatCount)
-        valueAnimator!!.setDuration(ANIMATION_CYCLE_DURATION.toLong())
-        valueAnimator!!.setRepeatMode(ValueAnimator.REVERSE)
-        valueAnimator!!.setInterpolator(LinearInterpolator())
-        valueAnimator!!.addUpdateListener(this)
+        valueAnimator = ValueAnimator.ofFloat(begin, end).apply {
+            this.repeatCount = repeatCount
+            this.duration = ANIMATION_CYCLE_DURATION.toLong()
+            this.repeatMode = ValueAnimator.REVERSE
+            this.interpolator = LinearInterpolator()
+            this.addUpdateListener(this@LoaderController)
+        }
     }
 
     override fun onAnimationUpdate(valueAnimator: ValueAnimator) {
@@ -140,6 +137,6 @@ internal class LoaderController(private val loaderView: LoaderView) : AnimatorUp
 
     companion object {
         private const val MAX_COLOR_CONSTANT_VALUE = 255
-        private const val ANIMATION_CYCLE_DURATION = 750 //milis
+        private const val ANIMATION_CYCLE_DURATION = 750 // Milliseconds
     }
 }

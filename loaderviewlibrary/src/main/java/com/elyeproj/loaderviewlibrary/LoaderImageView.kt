@@ -24,78 +24,69 @@ import androidx.core.content.ContextCompat
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */   class LoaderImageView : AppCompatImageView, LoaderView {
-    private var loaderController: LoaderController? = null
+ */
+class LoaderImageView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0,
+) : AppCompatImageView(context, attrs, defStyleAttr), LoaderView {
+
+    private val loaderController = LoaderController(this)
     private var defaultColorResource = 0
 
-    constructor(context: Context?) : super(context!!) {
-        init(null)
-    }
-
-    constructor(context: Context?, attrs: AttributeSet?) : super(context!!, attrs) {
-        init(attrs)
-    }
-
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context!!, attrs, defStyleAttr) {
-        init(attrs)
-    }
-
-    private fun init(attrs: AttributeSet?) {
-        loaderController = LoaderController(this)
-        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.loader_view, 0, 0)
-        loaderController!!.setUseGradient(typedArray.getBoolean(R.styleable.loader_view_use_gradient, LoaderConstant.USE_GRADIENT_DEFAULT))
-        loaderController!!.setCorners(typedArray.getInt(R.styleable.loader_view_corners, LoaderConstant.CORNER_DEFAULT))
-        defaultColorResource = typedArray.getColor(R.styleable.loader_view_custom_color, ContextCompat.getColor(context, R.color.default_color))
-        typedArray.recycle()
+    init {
+        context.obtainStyledAttributes(attrs, R.styleable.loader_view, 0, 0).use { typedArray ->
+            loaderController.setUseGradient(typedArray.getBoolean(R.styleable.loader_view_use_gradient, LoaderConstant.USE_GRADIENT_DEFAULT))
+            loaderController.setCorners(typedArray.getInt(R.styleable.loader_view_corners, LoaderConstant.CORNER_DEFAULT))
+            defaultColorResource = typedArray.getColor(R.styleable.loader_view_custom_color, ContextCompat.getColor(context, R.color.default_color))
+        }
     }
 
     fun resetLoader() {
         if (drawable != null) {
             super.setImageDrawable(null)
-            loaderController!!.startLoading()
+            loaderController.startLoading()
         }
     }
 
     override fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldHeight: Int) {
         super.onSizeChanged(width, height, oldWidth, oldHeight)
-        loaderController!!.onSizeChanged()
+        loaderController.onSizeChanged()
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        loaderController!!.onDraw(canvas)
+        loaderController.onDraw(canvas)
     }
 
-    override fun setRectColor(rectPaint: Paint?) {
-        rectPaint!!.color = defaultColorResource
+    override fun setRectColor(rectPaint: Paint) {
+        rectPaint.color = defaultColorResource
     }
 
-    override fun valueSet(): Boolean {
-        return drawable != null
-    }
+    override fun valueSet(): Boolean = drawable != null
 
     override fun setImageBitmap(bm: Bitmap) {
         super.setImageBitmap(bm)
-        if (loaderController != null) loaderController!!.stopLoading()
+        loaderController.stopLoading()
     }
 
     override fun setImageDrawable(drawable: Drawable?) {
         super.setImageDrawable(drawable)
-        if (loaderController != null) loaderController!!.stopLoading()
+        loaderController.stopLoading()
     }
 
     override fun setImageIcon(icon: Icon?) {
         super.setImageIcon(icon)
-        if (loaderController != null) loaderController!!.stopLoading()
+        loaderController.stopLoading()
     }
 
     override fun setImageResource(resId: Int) {
         super.setImageResource(resId)
-        if (loaderController != null) loaderController!!.stopLoading()
+        loaderController.stopLoading()
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        loaderController!!.removeAnimatorUpdateListener()
+        loaderController.removeAnimatorUpdateListener()
     }
 }

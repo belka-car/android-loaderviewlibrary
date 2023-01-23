@@ -17,8 +17,8 @@ import android.graphics.Paint
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-internal interface LoaderView {
-    fun setRectColor(rectPaint: Paint?)
+interface LoaderView {
+    fun setRectColor(rectPaint: Paint)
     fun invalidate()
     fun valueSet(): Boolean
 }
