@@ -1,13 +1,14 @@
-package com.elyeproj.loaderviewlibrary;
+package com.elyeproj.loaderviewlibrary
 
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
-import android.graphics.Canvas;
-import android.graphics.LinearGradient;
-import android.graphics.Paint;
-import android.graphics.RectF;
-import android.graphics.Shader;
-import android.view.animation.LinearInterpolator;
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
+import android.animation.ValueAnimator.AnimatorUpdateListener
+import android.graphics.Canvas
+import android.graphics.LinearGradient
+import android.graphics.Paint
+import android.graphics.RectF
+import android.graphics.Shader
+import android.view.animation.LinearInterpolator
 
 /*
  * Copyright 2016 Elye Project
@@ -24,124 +25,121 @@ import android.view.animation.LinearInterpolator;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+internal class LoaderController(private val loaderView: LoaderView) : AnimatorUpdateListener {
+    private var rectPaint: Paint? = null
+    private var linearGradient: LinearGradient? = null
+    private var progress = 0f
+    private var valueAnimator: ValueAnimator? = null
+    private var widthWeight = LoaderConstant.MAX_WEIGHT
+    private var heightWeight = LoaderConstant.MAX_WEIGHT
+    private var useGradient = LoaderConstant.USE_GRADIENT_DEFAULT
+    private var corners = LoaderConstant.CORNER_DEFAULT
 
-class LoaderController implements ValueAnimator.AnimatorUpdateListener {
-
-    private LoaderView loaderView;
-    private Paint rectPaint;
-    private LinearGradient linearGradient;
-    private float progress;
-    private ValueAnimator valueAnimator;
-    private float widthWeight = LoaderConstant.MAX_WEIGHT;
-    private float heightWeight = LoaderConstant.MAX_WEIGHT;
-    private boolean useGradient = LoaderConstant.USE_GRADIENT_DEFAULT;
-    private int corners = LoaderConstant.CORNER_DEFAULT;
-
-    private final static int MAX_COLOR_CONSTANT_VALUE = 255;
-    private final static int ANIMATION_CYCLE_DURATION = 750; //milis
-
-    public LoaderController(LoaderView view) {
-        loaderView = view;
-        init();
+    init {
+        init()
     }
 
-    private void init() {
-        rectPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
-        loaderView.setRectColor(rectPaint);
-        setValueAnimator(0.5f, 1, ObjectAnimator.INFINITE);
+    private fun init() {
+        rectPaint = Paint(Paint.ANTI_ALIAS_FLAG or Paint.FILTER_BITMAP_FLAG)
+        loaderView.setRectColor(rectPaint)
+        setValueAnimator(0.5f, 1f, ObjectAnimator.INFINITE)
     }
 
-    public void onDraw(Canvas canvas) {
-        onDraw(canvas, 0, 0, 0, 0);
-    }
-
-    public void onDraw(Canvas canvas, float left_pad, float top_pad, float right_pad, float bottom_pad) {
-        float margin_height = canvas.getHeight() * (1 - heightWeight) / 2;
-        rectPaint.setAlpha((int) (progress * MAX_COLOR_CONSTANT_VALUE));
+    @JvmOverloads
+    fun onDraw(canvas: Canvas, left_pad: Float = 0f, top_pad: Float = 0f, right_pad: Float = 0f, bottom_pad: Float = 0f) {
+        val margin_height = canvas.height * (1 - heightWeight) / 2
+        rectPaint!!.alpha = (progress * MAX_COLOR_CONSTANT_VALUE).toInt()
         if (useGradient) {
-            prepareGradient(canvas.getWidth() * widthWeight);
+            prepareGradient(canvas.width * widthWeight)
         }
-        canvas.drawRoundRect(new RectF(0 + left_pad,
-                        margin_height + top_pad,
-                        canvas.getWidth() * widthWeight - right_pad,
-                        canvas.getHeight() - margin_height - bottom_pad),
-                corners, corners,
-                rectPaint);
+        canvas.drawRoundRect(
+            RectF(
+                0 + left_pad,
+                margin_height + top_pad,
+                canvas.width * widthWeight - right_pad,
+                canvas.height - margin_height - bottom_pad
+            ),
+            corners.toFloat(), corners.toFloat(),
+            rectPaint!!
+        )
     }
 
-    public void onSizeChanged() {
-        linearGradient = null;
-        startLoading();
+    fun onSizeChanged() {
+        linearGradient = null
+        startLoading()
     }
 
-    private void prepareGradient(float width) {
+    private fun prepareGradient(width: Float) {
         if (linearGradient == null) {
-            linearGradient = new LinearGradient(0, 0, width, 0, rectPaint.getColor(),
-                    LoaderConstant.COLOR_DEFAULT_GRADIENT, Shader.TileMode.MIRROR);
+            linearGradient = LinearGradient(
+                0f, 0f, width, 0f, rectPaint!!.color,
+                LoaderConstant.COLOR_DEFAULT_GRADIENT, Shader.TileMode.MIRROR
+            )
         }
-        rectPaint.setShader(linearGradient);
+        rectPaint!!.shader = linearGradient
     }
 
-    public void startLoading() {
+    fun startLoading() {
         if (valueAnimator != null && !loaderView.valueSet()) {
-            valueAnimator.cancel();
-            init();
-            valueAnimator.start();
+            valueAnimator!!.cancel()
+            init()
+            valueAnimator!!.start()
         }
     }
 
-    public void setHeightWeight(float heightWeight) {
-        this.heightWeight = validateWeight(heightWeight);
+    fun setHeightWeight(heightWeight: Float) {
+        this.heightWeight = validateWeight(heightWeight)
     }
 
-    public void setWidthWeight(float widthWeight) {
-        this.widthWeight = validateWeight(widthWeight);
+    fun setWidthWeight(widthWeight: Float) {
+        this.widthWeight = validateWeight(widthWeight)
     }
 
-    public void setUseGradient(boolean useGradient) {
-        this.useGradient = useGradient;
+    fun setUseGradient(useGradient: Boolean) {
+        this.useGradient = useGradient
     }
 
-    public void setCorners(int corners) {
-        this.corners = corners;
+    fun setCorners(corners: Int) {
+        this.corners = corners
     }
 
-    private float validateWeight(float weight) {
-        if (weight > LoaderConstant.MAX_WEIGHT)
-            return LoaderConstant.MAX_WEIGHT;
-        if (weight < LoaderConstant.MIN_WEIGHT)
-            return LoaderConstant.MIN_WEIGHT;
-        return weight;
+    private fun validateWeight(weight: Float): Float {
+        if (weight > LoaderConstant.MAX_WEIGHT) return LoaderConstant.MAX_WEIGHT
+        return if (weight < LoaderConstant.MIN_WEIGHT) LoaderConstant.MIN_WEIGHT else weight
     }
 
-    public void stopLoading() {
+    fun stopLoading() {
         if (valueAnimator != null) {
-            valueAnimator.cancel();
-            setValueAnimator(progress, 0, 0);
-            valueAnimator.start();
+            valueAnimator!!.cancel()
+            setValueAnimator(progress, 0f, 0)
+            valueAnimator!!.start()
         }
     }
 
-    private void setValueAnimator(float begin, float end, int repeatCount) {
-        valueAnimator = ValueAnimator.ofFloat(begin, end);
-        valueAnimator.setRepeatCount(repeatCount);
-        valueAnimator.setDuration(ANIMATION_CYCLE_DURATION);
-        valueAnimator.setRepeatMode(ValueAnimator.REVERSE);
-        valueAnimator.setInterpolator(new LinearInterpolator());
-        valueAnimator.addUpdateListener(this);
+    private fun setValueAnimator(begin: Float, end: Float, repeatCount: Int) {
+        valueAnimator = ValueAnimator.ofFloat(begin, end)
+        valueAnimator!!.setRepeatCount(repeatCount)
+        valueAnimator!!.setDuration(ANIMATION_CYCLE_DURATION.toLong())
+        valueAnimator!!.setRepeatMode(ValueAnimator.REVERSE)
+        valueAnimator!!.setInterpolator(LinearInterpolator())
+        valueAnimator!!.addUpdateListener(this)
     }
 
-    @Override
-    public void onAnimationUpdate(ValueAnimator valueAnimator) {
-        progress = (float) valueAnimator.getAnimatedValue();
-        loaderView.invalidate();
+    override fun onAnimationUpdate(valueAnimator: ValueAnimator) {
+        progress = valueAnimator.animatedValue as Float
+        loaderView.invalidate()
     }
 
-    public void removeAnimatorUpdateListener() {
+    fun removeAnimatorUpdateListener() {
         if (valueAnimator != null) {
-            valueAnimator.removeUpdateListener(this);
-            valueAnimator.cancel();
+            valueAnimator!!.removeUpdateListener(this)
+            valueAnimator!!.cancel()
         }
-        progress = 0f;
+        progress = 0f
+    }
+
+    companion object {
+        private const val MAX_COLOR_CONSTANT_VALUE = 255
+        private const val ANIMATION_CYCLE_DURATION = 750 //milis
     }
 }
