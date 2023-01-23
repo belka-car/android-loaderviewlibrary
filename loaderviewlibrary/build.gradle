@@ -1,23 +1,14 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'maven-publish'
 
 ext {
-    PUBLISH_GROUP_ID = 'io.github.elye'
+    PUBLISH_GROUP_ID = 'com.github.onishchenko-belkacar'
     PUBLISH_VERSION = '4.0.0'
     PUBLISH_ARTIFACT_ID = 'loaderviewlibrary'
-    PUBLISH_DESCRIPTION = 'LoaderView Android SDK'
-    PUBLISH_URL = 'https://github.com/elye/loaderviewlibrary'
-    PUBLISH_LICENSE_NAME = 'Apache License'
-    PUBLISH_LICENSE_URL = 'https://github.com/elye/loaderviewlibrary/blob/master/LICENSE'
-    PUBLISH_DEVELOPER_ID = 'elye'
-    PUBLISH_DEVELOPER_NAME = 'Elye Project'
-    PUBLISH_DEVELOPER_EMAIL = 'elye.project@gmail.com'
-    PUBLISH_SCM_CONNECTION = 'scm:git:github.com/elye/loaderviewlibrary.git'
-    PUBLISH_SCM_DEVELOPER_CONNECTION = 'scm:git:ssh://github.com/elye/loaderviewlibrary.git'
-    PUBLISH_SCM_URL = 'https://github.com/elye/loaderviewlibrary/tree/master'
 }
-
-apply from: "${rootProject.projectDir}/scripts/publish-module.gradle"
+group = PUBLISH_GROUP_ID
+version = PUBLISH_VERSION
 
 android {
     compileSdkVersion 33
@@ -38,4 +29,17 @@ android {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.6.0'
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId = PUBLISH_GROUP_ID
+                artifactId = PUBLISH_VERSION
+                version = PUBLISH_ARTIFACT_ID
+            }
+        }
+    }
 }
