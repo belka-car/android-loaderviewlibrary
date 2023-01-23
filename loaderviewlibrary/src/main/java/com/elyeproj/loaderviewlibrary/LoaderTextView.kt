@@ -29,16 +29,16 @@ class LoaderTextView @JvmOverloads constructor(
     defStyleAttr: Int = 0,
 ) : AppCompatTextView(context, attrs, defStyleAttr), LoaderView {
 
-    private val loaderController: LoaderController = LoaderController(this)
+    private val loaderController: LoaderController? = LoaderController(this)
     private var defaultColorResource = 0
     private var darkerColorResource = 0
 
     init {
         context.obtainStyledAttributes(attrs, R.styleable.loader_view, 0, 0).use { typedArray ->
-            loaderController.setWidthWeight(typedArray.getFloat(R.styleable.loader_view_width_weight, LoaderConstant.MAX_WEIGHT))
-            loaderController.setHeightWeight(typedArray.getFloat(R.styleable.loader_view_height_weight, LoaderConstant.MAX_WEIGHT))
-            loaderController.setUseGradient(typedArray.getBoolean(R.styleable.loader_view_use_gradient, LoaderConstant.USE_GRADIENT_DEFAULT))
-            loaderController.setCorners(typedArray.getInt(R.styleable.loader_view_corners, LoaderConstant.CORNER_DEFAULT))
+            loaderController?.setWidthWeight(typedArray.getFloat(R.styleable.loader_view_width_weight, LoaderConstant.MAX_WEIGHT))
+            loaderController?.setHeightWeight(typedArray.getFloat(R.styleable.loader_view_height_weight, LoaderConstant.MAX_WEIGHT))
+            loaderController?.setUseGradient(typedArray.getBoolean(R.styleable.loader_view_use_gradient, LoaderConstant.USE_GRADIENT_DEFAULT))
+            loaderController?.setCorners(typedArray.getInt(R.styleable.loader_view_corners, LoaderConstant.CORNER_DEFAULT))
             defaultColorResource = typedArray.getColor(R.styleable.loader_view_custom_color, ContextCompat.getColor(context, R.color.default_color))
             darkerColorResource = typedArray.getColor(R.styleable.loader_view_custom_color, ContextCompat.getColor(context, R.color.darker_color))
         }
@@ -46,19 +46,19 @@ class LoaderTextView @JvmOverloads constructor(
 
     override fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldHeight: Int) {
         super.onSizeChanged(width, height, oldWidth, oldHeight)
-        loaderController.onSizeChanged()
+        loaderController?.onSizeChanged()
     }
 
     fun resetLoader() {
         if (text.isNotEmpty()) {
             super.setText(null)
-            loaderController.startLoading()
+            loaderController?.startLoading()
         }
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        loaderController.onDraw(
+        loaderController?.onDraw(
             canvas,
             compoundPaddingLeft.toFloat(),
             compoundPaddingTop.toFloat(),
@@ -67,9 +67,9 @@ class LoaderTextView @JvmOverloads constructor(
         )
     }
 
-    override fun setText(text: CharSequence, type: BufferType) {
+    override fun setText(text: CharSequence?, type: BufferType) {
         super.setText(text, type)
-        loaderController.stopLoading()
+        loaderController?.stopLoading()
     }
 
     override fun setRectColor(rectPaint: Paint) {
@@ -84,6 +84,6 @@ class LoaderTextView @JvmOverloads constructor(
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        loaderController.removeAnimatorUpdateListener()
+        loaderController?.removeAnimatorUpdateListener()
     }
 }
