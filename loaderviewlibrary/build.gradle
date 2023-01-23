@@ -3,7 +3,7 @@ apply plugin: 'kotlin-android'
 
 ext {
     PUBLISH_GROUP_ID = 'io.github.elye'
-    PUBLISH_VERSION = '3.0.0'
+    PUBLISH_VERSION = '4.0.0'
     PUBLISH_ARTIFACT_ID = 'loaderviewlibrary'
     PUBLISH_DESCRIPTION = 'LoaderView Android SDK'
     PUBLISH_URL = 'https://github.com/elye/loaderviewlibrary'
