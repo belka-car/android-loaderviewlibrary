@@ -2,9 +2,7 @@ name: Deploy to jFrog
 
 run-name: ${{ github.ref_name }}
 
-on:
-  release:
-    types: [ created ]
+on: workflow_dispatch
 
 jobs:
   deploy_to_jfrog:
@@ -26,10 +24,10 @@ jobs:
       - name: VPN connection setup
         run: |
           sudo apt install openconnect
-          echo ${VPN_PASSWORD} | sudo openconnect -vvv --no-dtls --background --user ${VPN_USER} --passwd-on-stdin ${VPN_URL}
+          echo ${VPN_PASSWORD} | sudo openconnect -vvv --no-dtls --background --user ${VPN_USER} --passwd-on-stdin ${VPN_URL} -q
 
-      - name: Build and deploy
-        id: build-deploy-step
-        uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
-        with:
-          arguments: artifactoryPublish
+#      - name: Build and deploy
+#        id: build-deploy-step
+#        uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+#        with:
+#          arguments: artifactoryPublish
