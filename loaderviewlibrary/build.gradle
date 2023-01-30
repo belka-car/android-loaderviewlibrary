@@ -1,14 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'maven-publish'
-
-ext {
-    PUBLISH_GROUP_ID = 'com.github.onishchenko-belkacar'
-    PUBLISH_VERSION = '4.0.0'
-    PUBLISH_ARTIFACT_ID = 'loaderviewlibrary'
-}
-group = PUBLISH_GROUP_ID
-version = PUBLISH_VERSION
 
 android {
     compileSdkVersion 33
@@ -31,15 +22,27 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.0'
 }
 
-afterEvaluate {
-    publishing {
-        publications {
-            release(MavenPublication) {
-                from components.release
-                groupId = PUBLISH_GROUP_ID
-                artifactId = PUBLISH_VERSION
-                version = PUBLISH_ARTIFACT_ID
-            }
+ext {
+    PUBLISH_GROUP_ID = 'eu.rexalto.forks'
+    PUBLISH_VERSION = '4.0.0'
+    PUBLISH_ARTIFACT_ID = 'loaderviewlibrary'
+}
+group = PUBLISH_GROUP_ID
+version = PUBLISH_VERSION
+
+artifactoryPublish.dependsOn("assemble")
+
+publishing {
+    publications {
+        aar(MavenPublication) {
+            artifactId = PUBLISH_ARTIFACT_ID
+            groupId = PUBLISH_GROUP_ID
+            version = PUBLISH_VERSION
+            artifact("$buildDir/outputs/aar/loaderviewlibrary-release.aar")
         }
     }
+}
+
+artifactoryPublish {
+    publications(publishing.publications.aar)
 }
