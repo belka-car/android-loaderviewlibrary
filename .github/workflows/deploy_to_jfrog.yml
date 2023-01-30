@@ -24,7 +24,7 @@ jobs:
       - name: VPN connection setup
         run: |
           sudo apt install openconnect
-          echo ${VPN_PASSWORD} | sudo openconnect -vvv --no-dtls --background --user ${VPN_USER} --passwd-on-stdin ${VPN_URL} -q
+          echo ${VPN_PASSWORD} | sudo openconnect -vvv --no-dtls --background --user ${VPN_USER} --passwd-on-stdin ${VPN_URL} > /dev/null 2>&1
 
 #      - name: Build and deploy
 #        id: build-deploy-step
