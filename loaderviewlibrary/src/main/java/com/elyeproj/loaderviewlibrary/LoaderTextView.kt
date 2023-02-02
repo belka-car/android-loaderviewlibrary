@@ -7,6 +7,7 @@ import android.graphics.Typeface
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.use
 
 /*
  * Copyright 2016 Elye Project

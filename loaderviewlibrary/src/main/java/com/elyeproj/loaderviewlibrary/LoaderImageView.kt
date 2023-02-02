@@ -9,6 +9,7 @@ import android.graphics.drawable.Icon
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.use
 
 /*
  * Copyright 2016 Elye Project
