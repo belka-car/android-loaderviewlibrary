@@ -8,18 +8,15 @@ buildscript {
     dependencies {
         classpath "com.android.tools.build:gradle:7.3.1"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:latest.release"
     }
 }
 
 allprojects {
-    apply plugin: "com.jfrog.artifactory"
     apply plugin: "maven-publish"
 
     repositories {
         google()
         mavenCentral()
-        maven { url "https://jfrog.belkacar.ru/artifactory/belkacar-maven-local" }
     }
 }
 
@@ -28,12 +25,3 @@ task clean(type: Delete) {
 }
 
 
-artifactory {
-    contextUrl = "https://jfrog.belkacar.ru/artifactory"
-    publish {
-        repository {
-            repoKey = "belkacar-maven-local"
-            maven = true
-        }
-    }
-}
